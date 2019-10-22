@@ -8,7 +8,7 @@ BOARD ?= bluepill
 RIOTBASE ?= $(CURDIR)/../RIOT
 
 USEMODULE += bmi160
-USEMODULE += uart_half_duplex
+USEMODULE += tsrb
 
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the

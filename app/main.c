@@ -4,30 +4,14 @@
 #include "xtimer.h"
 #include "bmi160.h"
 #include "bmi160_params.h"
-#include "uart_half_duplex.h"
-
-#define RS485_DIR       GPIO_PIN(PORT_A, 1)
-#define RS485_UART      UART_DEV(1)
-#define RS485_BAUDRATE  (115200L)
 #include "crc8.h"
+#include "rs485.h"
 
-static void rs485_dir_init(uart_t uart)
-{
-    (void)uart;
-    gpio_init(RS485_DIR, GPIO_OUT);
-}
-
-static void rs485_dir_enable_tx(uart_t uart)
-{
-    (void)uart;
-    gpio_set(RS485_DIR);
-}
-
-static void rs485_dir_disable_tx(uart_t uart)
-{
-    (void)uart;
-    gpio_clear(RS485_DIR);
-}
+static const rs485_params_t rs485_params = {
+	.uart = UART_DEV(1),
+	.dir_pin = GPIO_PIN(PORT_A, 1),
+	.baudrate = 115200
+};
 
 #define CH_ACC_X (0b00000001)
 #define CH_ACC_Y (0b00000010)
@@ -40,54 +24,44 @@ static void rs485_dir_disable_tx(uart_t uart)
 
 int main(void)
 {
-    static uart_half_duplex_t rs485;
-    static uart_half_duplex_params_t rs485_params = {
-        .uart = RS485_UART,
-        .baudrate = RS485_BAUDRATE,
-        .dir = {
-            .init = rs485_dir_init,
-            .enable_tx = rs485_dir_enable_tx,
-            .disable_tx = rs485_dir_disable_tx
-        }
-    };
-    static uint8_t rs485_buffer[128];
+    static rs485_t rs485;
     static bmi160_t bmi160;
+    static uint8_t buf[18];
 
-    uart_half_duplex_init(&rs485, rs485_buffer, sizeof(rs485_buffer), &rs485_params);
+    rs485_init(&rs485, &rs485_params);
 
     bmi160_init(&bmi160, bmi160_params);
 
     while (1) {
-        static size_t received_bytes;
+        bool run;
         static uint8_t cfg_active_sensors;
         static uint16_t cfg_sample_rate;
         static uint64_t next_measurment_us;
         static uint32_t sample_period_us;
 
-        LED0_OFF;
-
         puts("Waiting for configuration ...");
 
         /* Empfange Konfigurationsstartbyte */
         while (1) {
-            received_bytes = uart_half_duplex_recv(&rs485, 1);
-            if (received_bytes < 1) continue;
-            if (rs485.buffer[0] == 'A') break;
-            rs485.size = 0;
+            int c = rs485_try_get_one(&rs485);
+            if (c == 'A') break;
+            if ((xtimer_now_usec() / 1000000) % 2) {
+                LED0_OFF;
+            }
+            else {
+                LED0_ON;
+            }
         }
 
         /* Warte auf Konfiguration */
-        received_bytes = uart_half_duplex_recv(&rs485, 5);
-        if (received_bytes < 5) {
-            puts("- Timeout");
-            continue;
-        }
-        if (crc8(rs485.buffer, 4) != rs485.buffer[4]) {
+        buf[0] = 'A';
+        rs485_get(&rs485, buf + 1, 4);
+        if (crc8(buf, 4) != buf[4]) {
             puts("- Wrong CRC");
             continue;
         }
-        cfg_active_sensors = *((uint8_t *) (rs485.buffer + 1));
-        cfg_sample_rate = *((uint16_t *) (rs485.buffer + 2));
+        cfg_active_sensors = *((uint8_t *) (buf + 1));
+        cfg_sample_rate = *((uint16_t *) (buf + 2));
         if (cfg_sample_rate == 0) {
             puts("- Sample rate must be greater than 0");
             continue;
@@ -100,66 +74,67 @@ int main(void)
 
         puts("Starting measurement ...");
 
-        LED0_ON;
+        LED0_OFF;
 
-        do {
+        run = true;
+        while (run) {
             static bmi160_data_t acc, gyr;
             int i = 0;
-
-            /* Clear receiver buffer */
-            rs485.size = 0;
 
             /* Messung */
             bmi160_read(&bmi160, &gyr, &acc);
 
             /* Paket backen */
-            rs485.buffer[i] = 'M';
+            buf[i] = 'M';
             i += 1;
             if (cfg_active_sensors & CH_ACC_X) {
-                memcpy(&rs485.buffer[i], &acc.x, 2);
+                memcpy(&buf[i], &acc.x, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_ACC_Y) {
-                memcpy(&rs485.buffer[i], &acc.y, 2);
+                memcpy(&buf[i], &acc.y, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_ACC_Z) {
-                memcpy(&rs485.buffer[i], &acc.z, 2);
+                memcpy(&buf[i], &acc.z, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_GYR_X) {
-                memcpy(&rs485.buffer[i], &gyr.x, 2);
+                memcpy(&buf[i], &gyr.x, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_GYR_Y) {
-                memcpy(&rs485.buffer[i], &gyr.y, 2);
+                memcpy(&buf[i], &gyr.y, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_GYR_Z) {
-                memcpy(&rs485.buffer[i], &gyr.z, 2);
+                memcpy(&buf[i], &gyr.z, 2);
                 i += 2;
             }
             if (cfg_active_sensors & CH_TEMP) {
-                rs485.buffer[i + 0] = 0;
-                rs485.buffer[i + 1] = 0;
+                buf[i + 0] = 0;
+                buf[i + 1] = 0;
                 i += 2;
             }
             if (cfg_active_sensors & CH_HUM) {
-                rs485.buffer[i + 0] = 0;
-                rs485.buffer[i + 1] = 0;
+                buf[i + 0] = 0;
+                buf[i + 1] = 0;
                 i += 2;
             }
-            rs485.buffer[i] = crc8(rs485.buffer, i);
+            buf[i] = crc8(buf, i);
             i += 1;
 
             /* Paket senden */
-            uart_half_duplex_send(&rs485, i);
+            rs485_send(&rs485, buf, i);
 
             next_measurment_us += sample_period_us;
-            while (next_measurment_us > xtimer_now_usec64()) {
-                if (rs485.size > 0 && rs485.buffer[0] == 'Z') break;
-            }
-        } while (rs485.size < 1 || rs485.buffer[0] != 'Z');
+            do {
+                if (rs485_try_get_one(&rs485) == 'Z') {
+                    run = false;
+                    break;
+                }
+            } while (next_measurment_us > xtimer_now_usec64());
+        }
     }
 
     return 0;
