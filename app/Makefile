@@ -2,7 +2,7 @@
 APPLICATION = mls160a
 
 # If no BOARD is found in the environment, use this default:
-BOARD ?= bluepill
+BOARD ?= ssv-mls160a
 
 # Build with riotboot
 FEATURES_REQUIRED += riotboot

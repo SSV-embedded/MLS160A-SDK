@@ -62,7 +62,7 @@ static void mode_measure (void)
 
     puts("Starting measurement ...");
 
-    LED0_OFF;
+    LED0_ON;
 
     while (1) {
         const uint16_t empty = 0;
@@ -161,6 +161,7 @@ static void mode_update (void)
         more = len_req == len_rsp;
 
         printf("Received chunk from offset 0x%06lx with length %d\n", offset, len_rsp);
+        LED0_TOGGLE;
 
         /* Write chunk */
         riotboot_flashwrite_putbytes(&fw, &dgram.buf[8], len_rsp, more);
