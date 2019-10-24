@@ -124,6 +124,9 @@ static void mode_update (void)
     hmac_sha256_update(&hmac, "RIOT", RIOTBOOT_FLASHWRITE_SKIPLEN);
     riotboot_flashwrite_init(&fw, slot);
     max_len = riotboot_flashwrite_slotsize(&fw);
+    assert(max_len);
+
+    printf("Starting FW update in slot %d (max_len=%d)\n", slot, max_len);
 
     /* Receive chunks */
     while (more) {
@@ -131,6 +134,8 @@ static void mode_update (void)
         uint16_t len_rsp;
 
         if (offset + len_req > max_len) len_req = max_len - offset;
+
+        printf("Requesting chunk from offset 0x%06lx with length %d\n", offset, len_req);
 
         /* Request chunk */
         dgram_factory_init(&dgram, 'R');
@@ -154,6 +159,8 @@ static void mode_update (void)
         dgram_reader_receive(&dgram, &rs485, len_rsp);
         if (dgram_reader_finish(&dgram)) continue;
         more = len_req == len_rsp;
+
+        printf("Received chunk from offset 0x%06lx with length %d\n", offset, len_rsp);
 
         /* Write chunk */
         riotboot_flashwrite_putbytes(&fw, &dgram.buf[8], len_rsp, more);
@@ -180,10 +187,12 @@ static void mode_update (void)
     riotboot_flashwrite_finish(&fw);
 
     rs485_send(&rs485, (const uint8_t *) "Y", 1);
+    puts("Finished successfully");
     return;
 
 failed:
     rs485_send(&rs485, (const uint8_t *) "N", 1);
+    puts("Error!");
 }
 
 int main(void)
