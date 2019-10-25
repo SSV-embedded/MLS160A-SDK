@@ -7,6 +7,7 @@
 #include "hashes/sha256.h"
 #include "bmi160.h"
 #include "bmi160_params.h"
+#include "periph/pm.h"
 #include "rs485.h"
 #include "dgram.h"
 
@@ -116,11 +117,12 @@ static void mode_update (void)
     uint32_t offset = RIOTBOOT_FLASHWRITE_SKIPLEN;
     bool more = true;
     hmac_context_t hmac;
-    uint8_t *hmac_digest[SHA256_DIGEST_LENGTH];
+    uint8_t hmac_digest[SHA256_DIGEST_LENGTH];
     size_t max_len;
 
     /* Begin FW update */
     hmac_sha256_init(&hmac, FW_UPDATE_KEY, strlen(FW_UPDATE_KEY));
+    assert(RIOTBOOT_FLASHWRITE_SKIPLEN == 4);
     hmac_sha256_update(&hmac, "RIOT", RIOTBOOT_FLASHWRITE_SKIPLEN);
     riotboot_flashwrite_init(&fw, slot);
     max_len = riotboot_flashwrite_slotsize(&fw);
@@ -189,6 +191,7 @@ static void mode_update (void)
 
     rs485_send(&rs485, (const uint8_t *) "Y", 1);
     puts("Finished successfully");
+    pm_reboot();
     return;
 
 failed:
