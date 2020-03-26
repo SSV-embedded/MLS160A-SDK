@@ -22,14 +22,14 @@ typedef struct {
 
 int rs485_init(rs485_t *ctx, const rs485_params_t *params);
 
-inline void rs485_send(rs485_t *ctx, const uint8_t *data, size_t len)
+static inline void rs485_send(rs485_t *ctx, const uint8_t *data, size_t len)
 {
     gpio_set(ctx->dir_pin);
     uart_write(ctx->uart, data, len);
     gpio_clear(ctx->dir_pin);
 }
 
-inline int rs485_try_get_one(rs485_t *ctx)
+static inline int rs485_try_get_one(rs485_t *ctx)
 {
     return tsrb_get_one(&ctx->rb);
 }
