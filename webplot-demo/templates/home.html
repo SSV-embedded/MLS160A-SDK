@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<link rel="stylesheet" media="screen" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="static/css/custom.css">
+<style type="text/css">
+
+</style>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>SSV &ndash; MLS/160A</title>
+    </head>
+    <body>
+        <div id="container">
+			<div id="logo">
+				<div class="logo-container">
+					<img src="static/logo_ssv_white.svg" border="0" height="32" alt="SSV Software Systems GmbH" />
+				</div>
+			</div>
+			<div id="header">
+				<h2>MLS/160A</h2>
+			</div>
+			<div class="demo-container">
+				<div id="placeholder" class="demo-placeholder"></div>
+				<div id="choices"></div>
+                <div id="control-btns">
+                    <button type="button" onclick="start();">start</button> 
+                    <button type="button" onclick="stop();">pause</button> 
+                </div>
+			</div>
+			<div class="footer">
+				<div id="test" class="test"></div>
+			</div>
+        </div>
+    </body>
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.slim.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/socket.io-2.2.0.slim.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.canvaswrapper.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.colorhelpers.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.saturated.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.browser.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.drawSeries.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.errorbars.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/jquery.flot.uiConstants.js"></script>
+	<script language="javascript" type="text/javascript" src="/static/flot-chart/source/mls160a_plot.js"></script>
+	<script>
+
+	var socket2 = io();
+
+	function start(){
+        
+        socket2.emit('control','start');
+    }
+        
+	function stop(){
+        
+        socket2.emit('control','stop');
+    }
+        
+	</script>
+</html>
