@@ -9,7 +9,7 @@ FEATURES_REQUIRED += riotboot
 USEMODULE += riotboot_flashwrite
 
 # This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= $(CURDIR)/../RIOT
+RIOTBASE ?= $(CURDIR)/../..
 
 USEMODULE += bmi160
 USEMODULE += tsrb
@@ -24,3 +24,10 @@ DEVELHELP ?= 1
 QUIET ?= 1
 
 include $(RIOTBASE)/Makefile.include
+
+.PHONY: app
+app: riotboot
+	chmod +x ./hmac256.sh
+	./hmac256.sh $(BOARD) $(APPLICATION)
+
+
