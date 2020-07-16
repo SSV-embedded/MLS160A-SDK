@@ -189,7 +189,7 @@ If the SDU app is not pre-installed on your RMG/941, click in the menu on **Syst
 
 You can install the SDU app directly on the RMG/941 or **[download the SDU app](https://www.ssv-embedded.de/downloads/igw941/)** on your computer and then install it manually.
 
-### OpenOCD (for troubleshooting)
+### OpenOCD (for Factory Reset)
 
 OpenOCD is used when you need to flash the MLS/160A by hand with the help of the command line and the ST-Link/V2 debugger.
 
