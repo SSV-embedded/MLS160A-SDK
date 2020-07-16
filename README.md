@@ -6,7 +6,7 @@ Secure Device Updates (SDU) solve these problems and also offer the possibility 
 
 With the current state of the art, this requires a public key infrastructure (PKI) for digital signatures with private and public keys, certificates, blacklists, etc., in order to at least guarantee the authenticity and integrity of the update. All the necessary components are contained in SDU.
 
-![mls160a_riot_sdk_schema_en](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/mls160a_riot_sdk_schema_en.png)
+![mls160a_riot_sdk_schema_en](/images/mls160a_riot_sdk_schema_en.png)
 
 The following example describes how a new firmware for the soft sensor MLS/160A is created, signed and then uploaded via an IP network.
 
@@ -29,7 +29,7 @@ The Remote Maintenance Gateway RMG/941 from **[SSV Software Systems](https://www
 
 The RMG/941 has a pre-installed SDU app which carries out the firmware update of the MLS/160A.
 
-![rmg941](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/rmg941.png)
+![rmg941](/images/rmg941.png)
 
 For more information visit the **[RMG/941 product description](https://www.ssv-embedded.de/produkte/rmg941)**.
 
@@ -38,7 +38,7 @@ The sensor MLS/160A has the Bosch BMI160 at its heart with accelerometer and gyr
 
 The MLS/160A has an A/B boot concept with two slots of which only one is active. Every time the sensor is getting updated, the inactive slot is overwritten with the new firmware file. After the update the slot with the newest firmware becomes the active one and runs at power up. The firmware of the MLS/160A is build with RIOT OS.
 
-![mls160a](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/mls160a.png)
+![mls160a](/images/mls160a.png)
 
 For more information visit the **[MLS/160A product description](https://www.ssv-embedded.de/produkte/mls160a)**.
 
@@ -77,7 +77,7 @@ The figure below shows a demo setup in which a small water pump is used as a vib
 
 The Raspberry Pi in the picture has a CODESYS runtime installed which also can be updated with SDU.
 
-![hardware_setup](uploads/6c8992b96d8f92a0a5d7349aa8ab1a36/hardware_setup.jpg)
+![hardware_setup](/images/hardware_setup.jpg)
 
 
 ## Software Components
@@ -90,7 +90,7 @@ As mentioned before, the RIOT OS as well as the MLS/160A SDK are actual made for
 
 Here you can **[download Docker Desktop](https://www.docker.com/products/docker-desktop).**
 
-![docker_1](uploads/8557ecc3327f97a87d540cc409078cdc/docker_1.png)
+![docker_1](/images/docker_1.png)
 
 Make sure to download the Windows version (*.exe), then install Docker Desktop on your computer and start it. The start process may take a while. 
 
@@ -104,7 +104,7 @@ Before installing the MLS/160A SDK a special Docker container for compiling RIOT
 
 This process may take a while as the files are downloaded from the Internet.
 
-![docker_pull_riot_complete](uploads/12a27a25720cc0dbb6b88e6899f512d3/docker_pull_riot_complete.PNG)
+![docker_pull_riot_complete](/images/docker_pull_riot_complete.PNG)
 
 Now the MLS/160A SDK can be installed.
 
@@ -124,13 +124,13 @@ git submodule update
 
 After the installation you will see a folder structure like shown in the following picture:
 
-![folder_1](uploads/463186e37013dbc0445dbd8267d481ac/folder_1.PNG)
+![folder_1](/images/folder_1.PNG)
 
 **Installation without Git**
 
 Without Git you have to download the **[MLS/160A SDK repository](https://github.com/SSV-embedded/MLS160A-SDK)** directly from GitHub as a ZIP file. Therefore click on the green button **[Code]** and then click on **Download ZIP**.
 
-![mls160a-sdk_github_download](uploads/92fee7a9f8971ab2652a60a864cf932e/mls160a-sdk_github_download.PNG)
+![mls160a-sdk_github_download](/images/mls160a-sdk_github_download.PNG)
 
 After the download just extract the ZIP file in the MLS directory.
 
@@ -141,7 +141,7 @@ So go back to GitHub and click on the RIOT folder. You will be redirected to the
 
 The content of the RIOT directory should now look like shown in the following figure:
 
-![directory_riot](uploads/f12bec0147af9195dbe7aa126379302d/directory_riot.PNG)
+![directory_riot](/images/directory_riot.PNG)
 
 
 ### SDU Signing Tool
@@ -154,15 +154,15 @@ In our example here the SDU Signing Tool is used to sign the firmware files for 
 
 You can **[download the SDU Signing Tool](https://github.com/SSV-embedded/SDU)** directly from Github. Click on the green button **[Code]** and then click on **Download ZIP**.
 
-![github_sdu](uploads/b26b841386cb1aba845de385fe589ecb/github_sdu.png)
+![github_sdu](/images/github_sdu.png)
 
 Extract the ZIP file after the download and execute the file **SDU Signing Tool Setup 2.0.2.exe** to start the installation.
 
-![sdu_exe_1](uploads/7d901d2e3c5f9ffacbbe484a2a214c79/sdu_exe_1.PNG)
+![sdu_exe_1](/images/sdu_exe_1.PNG)
 
 Probably a blue dialog box will appear during the installation, saying that Windows blocks the execution of an unknown app (build.bat).
 
-![windows_warnung](uploads/58c617f1a7ed1d500ef86502e583f3bd/windows_warnung.png)
+![windows_warnung](/images/windows_warnung.png)
 
 In this case, just click on **More information** (or **Weitere informationen**) and then choose the option to execute the app anyway. After the installation the SDU Signing Tool opens automatically.
 
@@ -195,7 +195,7 @@ OpenOCD is used when you need to flash the MLS/160A by hand with the help of the
 
 Usually this is only necessary for your "golden master", since before an update is released for the field sensors, the new firmware should **always** be tested with the golden master. So if the new firmware is buggy and the MLS/160A does not work anymore, then you can always flash it by hand. If you skip this important test, you might cause the failure of all field sensors!
 
-![openocd_1](uploads/f9035df85381f19a0c656ef51fae6803/openocd_1.png)
+![openocd_1](/images/openocd_1.png)
 
 #### Installation and Configuration
 
@@ -210,15 +210,15 @@ Therefore open the Windows **control panel**, select **system** and then open th
 
 In the dialog box click on the button **[environment variables...]**.
 
-![path](uploads/21c2549ae83fb69f6fd7ecf9c9031849/path.PNG)
+![path](/images/path.PNG)
 
 In the section **System Variables**, doubleclick on **Path**.
 
-![path2](uploads/62b2415c29a5a703d242f6269a1a5948/path2.PNG)
+![path2](/images/path2.PNG)
 
 Finally add the path where you installed OpenOCD.
 
-![path3](uploads/0ab799248ccbdf43e3dd28c12298134a/path3.PNG)
+![path3](/images/path3.PNG)
 
 
 # Step 1: Building a New Firmware for MLS/160A
@@ -227,7 +227,7 @@ After the hard- and software setup is done, we can start building a new firmware
 
 First open the directory **/your MLS-directory/MLS160A-SDK/app**. You will see the following files inside the app-directory:
 
-![folder_fw-mls160a_1](uploads/2f6085b43f581c12f0d2f88bb57fc4ef/folder_fw-mls160a_1.PNG)
+![folder_fw-mls160a_1](/images/folder_fw-mls160a_1.PNG)
 
 The following table gives a short description of the files:
 
@@ -244,7 +244,7 @@ The following table gives a short description of the files:
 
 Now start docker and **doubleclick on build.bat** to execute it. A command line prompt will open automatically where you can see the building process.
 
-![build1](uploads/a6cc68ae9d201b3249d2dd5f317e9887/build1.PNG)
+![build1](/images/build1.PNG)
 
 When everything is finished, just press any key to close the command line.
 
@@ -257,7 +257,7 @@ The files with **slot0** in their names are for slot A and the files with **slot
 
 In the directory **/app** a new directory called **/bin** has also been created, which is only needed for troubleshooting.
 
-![folder_fw-mls160a_2](uploads/1316907de9d5f6c094521b2e6f990f5e/folder_fw-mls160a_2.PNG)
+![folder_fw-mls160a_2](/images/folder_fw-mls160a_2.PNG)
 
 
 # Step 2: Signing New Firmware with SDU Signing Tool
@@ -278,7 +278,7 @@ Following settings have to be done in the SDU Signing Tool:
 
 6. Finally click on **[Sign]** to start the process.
 
-![sdu_st1](uploads/af7917d9ce0501c4003ee1404fc0baf9/sdu_st1.PNG)
+![sdu_st1](/images/sdu_st1.PNG)
 
 If everything is right, a **message appears on the top** of the SDU Signing Tool.
 
@@ -301,7 +301,7 @@ In this step the **.sdu file** generated in step 2 is downloaded to the RMG/941.
 
 If the file is okay, a message is displayed at the bottom of the page and the file is listed in the field **Available firmware files**.
 
-![upload_success](uploads/48abfce807bad722777a6af580b742ed/upload_success.png)
+![upload_success](/images/upload_success.png)
 
 
 # Step 4: Uploading New Firmware to MLS/160A
@@ -312,11 +312,11 @@ Therefore just select the desired update file in the field **Available firmware 
 
 Confirm the question if you are sure to update the firmware by clicking on **Yes**.
 
-![question_sdu](uploads/a8ece11532937212f97db484aed0b456/question_sdu.png)
+![question_sdu](/images/question_sdu.png)
 
 If the update was successful a message on a green background appears.
 
-![sdu_success](uploads/4606a9f82c9af5e67837903216c3a45c/sdu_success.png)
+![sdu_success](/images/sdu_success.png)
   
   
 **Congratulations! You just updated the firmware of the MLS/160A :)**
@@ -330,11 +330,11 @@ If you want to run the demo, the demo files have to be transferred to the RMG/94
 
 1. First connect to the RMG/941 with the FTP client, navigate to the directory where you want to save the new files on the RMG/941 (we suggest **/media/data/**) and select the **/webplot-demo** directory on your computer. Rightclick on the directory and then click on **Upload**.
 
-![filezilla_2](uploads/80740ff5e1693ff564352060ef6fe26e/filezilla_2.PNG)
+![filezilla_2](/images/filezilla_2.PNG)
 
 2. Before the demo can be run, the **file mls160a_webplot.py must be set as executable**. Therefore you have to log into the RMG/941 via PuTTY or Shellinabox (web console). In this example we use Shellinabox. Open the SSV/WebUI and click in the menu on **Services > General**. Click the checkbox next to **Shellinabox service** and click on **[Apply]**.
 
-![general](uploads/f3aa08502385836d6f33a2710cd9b931/general.png)
+![general](/images/general.png)
 
 3. A green arrow on the right side indicates that the service is running. To open Shellinabox just click on the link **web console** on the right side or enter `your ip address:4200` in the browser's address bar.
 
@@ -344,7 +344,7 @@ If you want to run the demo, the demo files have to be transferred to the RMG/94
 
 6. Navigate to the directory where the demo files are stored, in this example **/media/data/webplot-demo**. To set the file **mls160a_webplot.py** as an executable use this command: `chmod +x mls160a_webplot.py`.
 
-![shellinabox_2](uploads/dbac17f7066263906cdb3f054c9a0203/shellinabox_2.PNG)
+![shellinabox_2](/images/shellinabox_2.PNG)
 
 7. Exit the Midnight Commander, change to the directory **/tmp** in Shellinabox and run the following command to start the demo webplot:
 
@@ -356,7 +356,7 @@ If you want to run the demo, the demo files have to be transferred to the RMG/94
 
     `192.168.0.126:5000`.
 
-![webplot](uploads/35dbe372fa9271049e60aa6a9d4bdd4a/webplot.png)
+![webplot](/images/webplot.png)
 
 # Factory reset
 
@@ -370,5 +370,5 @@ Now execute the following command:
 
 The MLS/160A should now work properly again!
 
-![mls160a_open](uploads/d641afa643111a3f03e8503a1d8cb247/mls160a_open.JPG)
+![mls160a_open](/images/mls160a_open.JPG)
 
