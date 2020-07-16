@@ -29,7 +29,7 @@ The Remote Maintenance Gateway RMG/941 from **[SSV Software Systems](https://www
 
 The RMG/941 has a pre-installed SDU app which carries out the firmware update of the MLS/160A.
 
-![rmg941](uploads/68a98159e491cd11d2f2dee54cc004ca/rmg941.png)
+![rmg941](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/rmg941.png)
 
 For more information visit the **[RMG/941 product description](https://www.ssv-embedded.de/produkte/rmg941)**.
 
@@ -38,7 +38,7 @@ The sensor MLS/160A has the Bosch BMI160 at its heart with accelerometer and gyr
 
 The MLS/160A has an A/B boot concept with two slots of which only one is active. Every time the sensor is getting updated, the inactive slot is overwritten with the new firmware file. After the update the slot with the newest firmware becomes the active one and runs at power up. The firmware of the MLS/160A is build with RIOT OS.
 
-![mls160a](uploads/01e5acf69fdea8239b5989ac0d212da4/mls160a.png)
+![mls160a](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/mls160a.png)
 
 For more information visit the **[MLS/160A product description](https://www.ssv-embedded.de/produkte/mls160a)**.
 
@@ -65,7 +65,7 @@ The ST-Link/V2 debugger/programmer can be obtained from **[DigiKey](https://www.
 > **PLEASE NOTE:<br/>
 > To connect the ST-Link/V2 to the MLS/160A a special adapter cable with a JTAG controller is required. This adapter cable can be obtained directly from SSV. Simply contact the sales team via sales@ssv-embedded.de.**
 
-![ST-LINK_V2](uploads/a41cec37da6b5cb6091382667ef81c88/ST-LINK_V2.png)
+![ST-LINK_V2](/images/ST-LINK_V2.png)
 
 ## Hardware Setup
 
