@@ -6,7 +6,7 @@ Secure Device Updates (SDU) solve these problems and also offer the possibility 
 
 With the current state of the art, this requires a public key infrastructure (PKI) for digital signatures with private and public keys, certificates, blacklists, etc., in order to at least guarantee the authenticity and integrity of the update. All the necessary components are contained in SDU.
 
-![mls160a_riot_sdk_schema_en](uploads/43978ac32f1e3535cf82cc549ef7f77a/mls160a_riot_sdk_schema_en.png)
+![mls160a_riot_sdk_schema_en](https://github.com/SSV-embedded/MLS160A-SDK/blob/master/images/mls160a_riot_sdk_schema_en.png)
 
 The following example describes how a new firmware for the soft sensor MLS/160A is created, signed and then uploaded via an IP network.
 
